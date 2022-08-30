@@ -1,47 +1,33 @@
-// import React, { useEffect, useState } from 'react'
-// import { useSelector } from 'react-redux';
-// import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-// function Dashboard() {
-// const [state, setState]=useState()
-//   const  {user:currentUser} = useSelector((state)=>state.auth)
-//   let user = JSON.parse(sessionStorage.getItem('token'));
-//   const token = currentUser.data.id;
-//   const result=currentUser[token]
-//   console.log(result)
+import { useSelector } from "react-redux";
+import { profile } from "../features/auth/authSlice";
+import Products from "./Product";
 
-  
+function Dashboard() {
+  const dispatch = useDispatch();
+  const { user: currentUser } = useSelector((state) => state.auth);
 
-//   const api = `https://e-commerce-backend-sigma.vercel.app/api/user-profile`
-//   const data= axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
-//           .then(res => {
-//               console.log(res.data);
-//           setState({
-//               items: res.data,  /*set response data in items array*/
-//               isLoaded : true,
-//               redirectToReferrer: false
-//           })
-  
-//       })
+  useEffect(() => {
+    dispatch(profile());
+  }, [dispatch]);
 
-//       useEffect(()=>{
-//         setState()
-//       }, [])
-//       console.log(data)
-
-//   return (
-//     <div>
-//       <div className='container'>
-//       {/* <h1>{currentUser.data._id}</h1> */}
-//        <h1>{currentUser.data.name}</h1>
-//       <h1>{currentUser.data.email}</h1>
-//       <h3>{currentUser.message}</h3>
-//       <h3>{currentUser.status}</h3>
-//       <h3>{currentUser.token}</h3> 
+  return (
+    <div> 
      
-//       </div>
-//     </div>
-//   )
-// }
+      <div className="container" style={{ display:"flex",flexDirection:"row",width:"30%" , float:"right" , border:"2px solid wheat",backgroundColor:"wheat "}}>
+           
+        <div style={{display:'flex', textAlign:"center", flexDirection:"column"}}> 
+          <h3>{currentUser.message}</h3>
+          <h4>{currentUser.data.name}</h4>
+          <h3>{currentUser.data.email}</h3>
+        </div>
+        
+      </div>
+      <Products/>
+    </div>
+  );
+}
 
-// export default Dashboard
+export default Dashboard;

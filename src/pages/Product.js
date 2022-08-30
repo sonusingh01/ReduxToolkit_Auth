@@ -2,20 +2,15 @@ import { Container, Card } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, CardContent, CardHeader, Grid, Stack } from "@mui/material";
-// import { useHistory } from 'react-router-dom';
-// import { cartActions } from '../store/CartSlice';
-// import { useDispatch, useSelector } from 'react-redux';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  // const {isAuth} = useSelector(state => state.auth);
-  // const history = useHistory();
-  // const dispatch = useDispatch();
+
   useEffect(() => {
     const fetch = async () => {
       try {
-        const { data } = await axios.get("https://fakestoreapi.com/products");
+        const { data } = await axios.get("products");
         console.log(data);
         setProducts(data);
         setLoading(false);
@@ -25,35 +20,14 @@ const Products = () => {
     };
 
     fetch();
-
-    /*const fetchCart = async () => {
-			try {
-				
-				const { data } = await axios.get('http://localhost:8000/cart');
-				if (data) {
-					dispatch(cartActions.cartReset(data));
-				}
-			} catch (error) {
-				console.log(error);
-			}
-			
-		};
-
-		if(isAuth){
-		fetchCart();
-		
-		} */
   }, []);
 
   console.log(products);
 
-  // const clickHandler = (id) => {
-  // 	// history.push(id);
-  //     console.log(id)
-  // };
-
   return (
-    <Container style={{ display: "flex", flexDirection: "column" , width:"120%" }}>
+    <Container
+      style={{ display: "flex", flexDirection: "column", width: "120%" }}
+    >
       {loading ? (
         <h2>Loading ....</h2>
       ) : (
@@ -98,15 +72,11 @@ const Products = () => {
                 </CardContent>
               </Card>
               <Stack direction="row" spacing={2}>
-            
-            <Button variant="contained" color="success">
-              View
-            </Button>
-        
-            
-          </Stack>
+                <Button variant="contained" color="success">
+                  View
+                </Button>
+              </Stack>
             </Grid>
-          
           ))}
         </Grid>
       )}

@@ -10,6 +10,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: "",
+ 
 };
 
 // Register user
@@ -43,11 +44,13 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   }
 });
 
+//getuser
+
 export const profile = createAsyncThunk(
   "auth/user-profile",
-  async (user, thunkAPI) => {
+  async (users, thunkAPI) => {
     try {
-      return await authService.profile(user);
+      return await authService.getUser(users);
     } catch (error) {
       const message =
         (error.response &&
@@ -105,18 +108,24 @@ export const authSlice = createSlice({
         state.message = action.payload;
         state.user = null;
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logout.fulfilled, (state,action) => {
         state.user = null;
       })
       .addCase(profile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(profile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(profile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
         state.user = null;
       })
-      .addCase(profile.fulfilled, (state) => {
-        state.user = null;
-      })
-      .addCase(profile.rejected, (state) => {
-        state.user = null;
-      });
+      
   },
 });
 

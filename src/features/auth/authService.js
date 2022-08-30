@@ -1,53 +1,46 @@
-import axios from 'axios'
-
+import axios from "axios";
+import authHeader from "./authHeader";
 
 // Register user
 const register = async (userData) => {
-  const response = await axios.post("https://e-commerce-backend-sigma.vercel.app/api/register", userData)
+  const response = await axios.post("register", userData);
 
   if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
+    localStorage.setItem("user", JSON.stringify(response.data));
   }
 
-  return response.data
-}
+  return response.data;
+};
 
 // Login user
-const login = async (userData) => {
-  const response = await axios.post("https://e-commerce-backend-sigma.vercel.app/api/login", userData)
+const login = (userData) => {
+  return axios.post("login", userData).then((response) => {
+    if (response.data) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("token", response.data.token);
+    }
+    return response.data;
+  });
+};
 
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
-  }
-
-  return response.data
-}
-
-const profile = async (userData) => {
-  const response = await axios.get("https://e-commerce-backend-sigma.vercel.app/api/user-profile", userData)
+const getUser = async () => {
+  const response = await axios.get("user-profile", {
+    headers: authHeader(),
+  });
+return response.data
   
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
-    
-
-  }
-  return response.data
-}
-
-
-
-
+};
 
 // Logout user
 const logout = () => {
-  localStorage.removeItem('user')
-}
+  localStorage.removeItem("user");
+};
 
 const authService = {
   register,
   logout,
   login,
-  profile,
-}
+  getUser,
+};
 
-export default authService
+export default authService;

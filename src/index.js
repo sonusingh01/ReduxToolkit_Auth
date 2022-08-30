@@ -5,7 +5,8 @@ import App from './App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-
+import axios from "axios";
+axios.defaults.baseURL=process.env.REACT_APP_BASE_API
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
